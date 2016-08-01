@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<!-- <head>
+  <link href='http://fonts.googleapis.com/css?family=Lato:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+  <link rel="stylesheet" type="text/css" href="style.css">
+</head>  
+
+<script src="lever.js"</script>
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+
+
+<body>
+<section>
+  <div class="container" id="jobs-container">
+    <h1>Open jobs</h1>
+    <div class="jobs-teams">
+    <p>Engineering</p>
+    <p>Sales & Marketing</p>
+    <p>Human Resources</p>
+    <p>Product</p>
+    <p>Design</p>
+    </div>
+    <div class="jobs-list">
+    <p>Engineering</p>
+    <p>Sales & Marketing</p>
+    <p>Human Resources</p>
+    <p>Product</p>
+    <p>Design</p>
+    </div>
+  </div>
+</section>  
+
+</body> -->
+
+<style>
+body {
+  font-family: 'Lato', sans-serif;
+  overflow-y: scroll;
+  color: #454545;
+}
+  
+p {
+  margin: 0 0 1em 0;
+  line-height: 1.4em;
+}
+* {
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+}
+section {
+  position: relative;
+  padding: 30px;
+}
+.container {
+  max-width: 960px;
+  margin: 0 auto;
+}
+.job {
+  display: inline-block;
+  vertical-align: top;
+  width: 50%;
+  padding: 40px 30px;
+}
+h1 {
+  font-size: 48px;
+  padding: 0 30px;
+}
+.job-title {
+  font-size: 24px;
+  text-decoration: none;
+  color: #454545;
+}
+
+.job-title:hover {
+  color: #00A0DF; 
+}
+
+.tags span {
+  color: #999;
+  font-size: 12px;
+  color: grayMediumDark;
+}
+.tags span:after {
+  content: ', ';
+}
+.tags span:last-of-type:after {
+  content: '';
+}
+.description {
+  color: #999;
+}
+.btn {
+  display: inline-block;
+  padding: 7px 15px;
+  text-decoration: none;
+  font-weight: normal;
+  color: #999;
+  border: 2px solid #ebebeb;
+  -webkit-border-radius: 4px;
+  border-radius: 4px;
+  background: #f9f9f9;
+}
+.btn:hover {
+  background: #ebebeb;
+  color: #555;
+}
+.btn.active {
+  background: #454545;
+  border-color: #454545;
+  color: #fff;
+}
+.jobs-teams {
+  margin-bottom: 40px;
+  padding: 0 30px
+}
+.jobs-teams .btn {
+  margin: 0 8px 8px 0;
+}
+.jobs-teams .btn:first-of-type {
+  margin-left: 0;
+}
+.jobs-teams .btn:last-of-type {
+  margin-right: 0;
+}
+
+
+</style>
+<head>
+  <link href='http://fonts.googleapis.com/css?family=Lato:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+</head>  
+
+<body>
+<section>
+  <div class="container" id="jobs-container">
+    <h1>Open jobs</h1>
+    <div class="jobs-list">
+    </div>
+  </div>
+</section>  
+
+</body>
+
+
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+
+<script type="text/javascript">
+  
+  // REPLACE "leverdemo" WITH OUR OWN COMPANY NAME
+
+url = 'https://api.lever.co/v0/postings/leverdemo?mode=json'
+
+
+function createJobs(_data) {
+  for(i = 0; i < _data.length; i++) {
+    var posting = _data[i] 
+    var title = posting.text
+    var description = posting.description  
+    //Making each job description shorter than 250 characters
+    var shortDescription = $.trim(description).substring(0, 250)
+    .replace('\n', ' ') + "...";
+    var location = posting.categories.location
+    var commitment = posting.categories.commitment
+    var team = posting.categories.team
+    var link = posting.hostedUrl
+
+    $('#jobs-container .jobs-list').append(
+      '<div data-link="'+link+'" class="job '+team+' '+location+' '+commitment+'">' +
+        '<h2 class="job-title" href="'+link+'"">'+title+'</h2>' +
+        '<p class="tags"><span>'+team+'</span><span>'+location+'</span><span>'+commitment+'</span></p>' +
+        '<p class="description">'+shortDescription+'</p>' +
+      '</div>'  
+    );
+  }
+}
+
+//Fetching job postings from Lever's postings API
+$.ajax({
+  dataType: "json",
+  url: url,
+  success: function(data){
+    createJobs(data);
+  }
+});
+
+//Making each job description a link
+$("#jobs-container").on("click", ".job", function() {
+    var link = $(this).data("link");
+    window.location.href = link;
+});
+
+</script>
+
+</html>
+
+
+

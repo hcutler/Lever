@@ -1,2 +1,2 @@
 # Lever
-Playing around with the Lever API using Python and JavaScript.
+Playing around with the [Lever API](https://github.com/lever/postings-api) using Python and JavaScript.
